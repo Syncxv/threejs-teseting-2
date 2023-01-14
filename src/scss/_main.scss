@@ -6,14 +6,15 @@
     // margin-top: 20vmax;
     width: 100vw;
     height: 100vh;
-    &::before {
-        content: '';
-        height: 350px;
-        width: 350px;
-        background: blue;
-        position: absolute;
-        top: 50%;
-        transform: translate(0%, -50%);
-        left: 65%;
-    }
+    //to test if the canvas plane was 350px x 350px yk
+    // &::before {
+    //     content: '';
+    //     height: 350px;
+    //     width: 350px;
+    //     background: blue;
+    //     position: absolute;
+    //     top: 50%;
+    //     transform: translate(0%, -50%);
+    //     left: 65%;
+    // }
 }

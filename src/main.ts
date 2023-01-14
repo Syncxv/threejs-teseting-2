@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 import { SphereTesting } from './testing/sphere';
-import { Plane as PlaneTesting } from './testing/plane-test/plane';
+import { Plane as PlaneTesting } from './testing/plane-test';
 
 let zDistance = 600;
 
