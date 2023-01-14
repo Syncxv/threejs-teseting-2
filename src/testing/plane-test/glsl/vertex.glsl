@@ -5,10 +5,12 @@ uniform float uTime;
 uniform float uProgress;
 uniform vec2 uResolution;
 uniform vec2 uQuadSize;
+uniform vec2 uTextureSize;
 
 
 varying vec2 vUv;
 varying vec3 vNormal;
+varying vec2 vSize;
 void main() {
 
     vNormal = normal;
@@ -21,6 +23,8 @@ void main() {
     fullscreenState.x *=  uResolution.x / uQuadSize.x ;
     fullscreenState.y *=  uResolution.y / uQuadSize.y ;
     vec4 finalState = mix(initalState, fullscreenState, uProgress);
+
+    vSize = mix(uQuadSize, uResolution, uProgress);
 
     gl_Position = projectionMatrix * viewMatrix * finalState;
 

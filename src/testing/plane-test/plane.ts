@@ -37,6 +37,8 @@ export class Plane {
                 uTime: { value: 0.0 },
                 uProgress: { value: 0.0 },
                 uTexture: { value: new THREE.TextureLoader().load('/debug-texture.jpg') },
+                //uTextureSize is meant get aspect ratio so the size really doenst matter. since debug texture is a square aspect ratio will be 1
+                uTextureSize: { value: new THREE.Vector2(100, 100) },
                 uResolution: { value: new THREE.Vector2(getWidth(), getHeight()) },
                 uQuadSize: { value: new THREE.Vector2(350, 350) },
             },
