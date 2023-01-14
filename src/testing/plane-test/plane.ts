@@ -3,6 +3,7 @@ import * as dat from 'dat.gui';
 
 import vertexShader from './glsl/vertex.glsl';
 import fragmentShader from './glsl/fragment.glsl';
+import { getHeight, getWidth } from '../../main';
 
 export class Plane {
     geometry!: THREE.PlaneGeometry;
@@ -36,6 +37,8 @@ export class Plane {
                 uTime: { value: 0.0 },
                 uProgress: { value: 0.0 },
                 uTexture: { value: new THREE.TextureLoader().load('/debug-texture.jpg') },
+                uResolution: { value: new THREE.Vector2(getWidth(), getHeight()) },
+                uQuadSize: { value: new THREE.Vector2(350, 350) },
             },
 
             vertexShader,

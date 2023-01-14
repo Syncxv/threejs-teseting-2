@@ -9,8 +9,8 @@ let zDistance = 600;
 
 const mouse = new THREE.Vector2();
 const container = document.querySelector('.container')!;
-const getHeight = () => container.getBoundingClientRect().height;
-const getWidth = () => container.getBoundingClientRect().width;
+export const getHeight = () => container.getBoundingClientRect().height;
+export const getWidth = () => container.getBoundingClientRect().width;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(80, getWidth() / getHeight(), 10, 1000);
 
