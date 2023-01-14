@@ -1,12 +1,24 @@
 import * as THREE from 'three';
+import * as dat from 'dat.gui';
 export class Plane {
     geometry!: THREE.PlaneGeometry;
     material!: THREE.MeshBasicMaterial;
-    scene: THREE.Scene;
     mesh!: THREE.Mesh;
+    scene: THREE.Scene;
+
+    settings = {
+        progress: 0,
+    };
+    gui!: dat.GUI;
     constructor(scene: THREE.Scene) {
         this.scene = scene;
+        this.setUpSettings();
         return this;
+    }
+
+    setUpSettings() {
+        this.gui = new dat.GUI();
+        this.gui.add(this.settings, 'progress', 0, 1, 0.001);
     }
 
     addObjects() {
