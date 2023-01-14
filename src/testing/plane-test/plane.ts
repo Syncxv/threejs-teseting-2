@@ -57,8 +57,8 @@ export class Plane {
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
         this.scene.add(this.mesh);
-        this.mesh.position.x += 300;
-        this.mesh.rotation.z += 0.5;
+        this.mesh.position.x -= 300;
+        // this.mesh.rotation.z += 0.5;
         return this;
     }
 
