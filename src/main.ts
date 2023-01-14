@@ -60,7 +60,7 @@ let plane = new PlaneTesting(scene).addObjects();
 (window as any).plane = plane;
 
 function animate(t?: number) {
-    plane.render();
+    // plane.render();
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }

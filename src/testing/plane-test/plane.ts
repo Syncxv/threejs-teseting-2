@@ -20,12 +20,14 @@ export class Plane {
     constructor(scene: THREE.Scene) {
         this.scene = scene;
         this.setUpSettings();
+
+        document.getElementById('corner')?.addEventListener('click', () => (this.tl.progress() >= 1 ? this.tl.reverse() : this.play()));
         return this;
     }
 
     render() {
         // this.material.uniforms.uProgress.value = this.settings.progress;
-        this.tl.progress(this.settings.progress);
+        // this.tl.progress(this.settings.progress);
     }
 
     setUpSettings() {
@@ -62,11 +64,15 @@ export class Plane {
 
     setUpAnimation() {
         this.tl = gsap
-            .timeline({ defaults: { duration: 1 } })
+            .timeline({ paused: true, defaults: { duration: 1 } })
             .to(this.material.uniforms.uCorners.value, { x: 1 })
             .to(this.material.uniforms.uCorners.value, { y: 1 }, 0.1)
             .to(this.material.uniforms.uCorners.value, { z: 1 }, 0.3)
             .to(this.material.uniforms.uCorners.value, { w: 1 }, 0.5);
+    }
+
+    play() {
+        this.tl.play();
     }
 
     destroy() {
