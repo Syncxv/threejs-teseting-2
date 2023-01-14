@@ -35,6 +35,7 @@ export class Plane {
             uniforms: {
                 uTime: { value: 0.0 },
                 uProgress: { value: 0.0 },
+                uTexture: { value: new THREE.TextureLoader().load('/debug-texture.jpg') },
             },
 
             vertexShader,
