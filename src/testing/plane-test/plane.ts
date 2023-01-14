@@ -62,7 +62,7 @@ export class Plane {
 
     setUpAnimation() {
         this.tl = gsap
-            .timeline()
+            .timeline({ defaults: { duration: 1 } })
             .to(this.material.uniforms.uCorners.value, { x: 1 })
             .to(this.material.uniforms.uCorners.value, { y: 1 }, 0.1)
             .to(this.material.uniforms.uCorners.value, { z: 1 }, 0.3)

@@ -24,9 +24,9 @@ void main() {
     fullscreenState.x *=  uResolution.x / uQuadSize.x ;
     fullscreenState.y *=  uResolution.y / uQuadSize.y ;
 
-    float realProgress = mix(mix(uCorners.x, uCorners.y, uv.x), mix(uCorners.z, uCorners.w, uv.x), uv.y);
+    float realProgress = mix(mix(uCorners.y, uCorners.x, uv.x), mix(uCorners.z, uCorners.w, uv.x), uv.y);
 
-    vSize = mix(uQuadSize, uResolution, uProgress);
+    vSize = mix(uQuadSize, uResolution, realProgress);
 
     vec4 finalState = mix(initalState, fullscreenState, realProgress);
     gl_Position = projectionMatrix * viewMatrix * finalState;
