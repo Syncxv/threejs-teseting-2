@@ -1,0 +1,19 @@
+@use 'base';
+#root {
+    height: 100vh;
+}
+.container {
+    // margin-top: 20vmax;
+    width: 100vw;
+    height: 100vh;
+    &::before {
+        content: '';
+        height: 350px;
+        width: 350px;
+        background: blue;
+        position: absolute;
+        top: 50%;
+        transform: translate(0%, -50%);
+        left: 65%;
+    }
+}
