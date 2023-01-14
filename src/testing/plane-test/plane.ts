@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
+import gsap from 'gsap';
 
 import vertexShader from './glsl/vertex.glsl';
 import fragmentShader from './glsl/fragment.glsl';
@@ -15,6 +16,7 @@ export class Plane {
         progress: 0,
     };
     gui!: dat.GUI;
+    tl!: gsap.core.Timeline;
     constructor(scene: THREE.Scene) {
         this.scene = scene;
         this.setUpSettings();
@@ -22,7 +24,8 @@ export class Plane {
     }
 
     render() {
-        this.material.uniforms.uProgress.value = this.settings.progress;
+        // this.material.uniforms.uProgress.value = this.settings.progress;
+        this.tl.progress(this.settings.progress);
     }
 
     setUpSettings() {
@@ -41,18 +44,29 @@ export class Plane {
                 uTextureSize: { value: new THREE.Vector2(100, 100) },
                 uResolution: { value: new THREE.Vector2(getWidth(), getHeight()) },
                 uQuadSize: { value: new THREE.Vector2(350, 350) },
+                uCorners: { value: new THREE.Vector4(0, 0, 0, 0) },
             },
 
             vertexShader,
             fragmentShader,
         });
 
+        this.setUpAnimation();
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
         this.scene.add(this.mesh);
         this.mesh.position.x += 300;
         this.mesh.rotation.z += 0.5;
         return this;
+    }
+
+    setUpAnimation() {
+        this.tl = gsap
+            .timeline()
+            .to(this.material.uniforms.uCorners.value, { x: 1 })
+            .to(this.material.uniforms.uCorners.value, { y: 1 }, 0.1)
+            .to(this.material.uniforms.uCorners.value, { z: 1 }, 0.3)
+            .to(this.material.uniforms.uCorners.value, { w: 1 }, 0.5);
     }
 
     destroy() {
