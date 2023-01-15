@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { SphereTesting } from './testing/sphere';
 import { Plane as PlaneTesting } from './testing/plane-test';
 import ASScroll from '@ashthornton/asscroll';
-const asscroll = new ASScroll();
+const asscroll = new ASScroll({ disableRaf: true });
 window.addEventListener('load', () => asscroll.enable());
 
 let zDistance = 600;

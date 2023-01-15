@@ -42,6 +42,7 @@ export class Plane {
     render() {
         // this.material.uniforms.uProgress.value = this.settings.progress;
         // this.tl.progress(this.settings.progress);
+        this.asscroll.update();
         this.setPosition();
     }
 
@@ -154,8 +155,8 @@ export class Plane {
         // console.log(this.asscroll.currentPos)
         if (!this.tl.isActive()) {
             this.imageData.forEach((o) => {
-                o.mesh.position.x = -this.asscroll.currentPos + o.left - getWidth() / 2 + o.width / 2;
-                o.mesh.position.y = -o.top + getHeight() / 2 - o.height / 2;
+                o.mesh.position.x = o.left - getWidth() / 2 + o.width / 2;
+                o.mesh.position.y = this.asscroll.currentPos + -o.top + getHeight() / 2 - o.height / 2;
             });
         }
     }
