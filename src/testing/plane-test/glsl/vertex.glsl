@@ -23,6 +23,7 @@ void main() {
     vec4 fullscreenState = vec4(position, 1.0);
     fullscreenState.x *=  uResolution.x ;
     fullscreenState.y *=  uResolution.y ;
+    fullscreenState.z +=  uCorners.x ;
 
     float realProgress = mix(mix(uCorners.y, uCorners.x, uv.x), mix(uCorners.z, uCorners.w, uv.x), uv.y);
 
