@@ -53,6 +53,8 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize(getWidth(), getHeight());
+    camera.fov = (2 * Math.atan(getHeight() / 2 / zDistance) * 180) / Math.PI;
+    plane.resize();
 }
 function onDocumentMouseMove(event: MouseEvent) {
     mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);

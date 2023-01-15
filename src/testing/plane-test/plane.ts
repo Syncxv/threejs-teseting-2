@@ -20,19 +20,25 @@ export class Plane {
     tl!: gsap.core.Timeline;
     images!: HTMLImageElement[];
     imageData!: {
-        img: HTMLImageElement;
-        mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>;
-        width: number;
-        height: number;
-        top: number;
-        left: number;
-    }[];
+        [key: string]: {
+            img: HTMLImageElement;
+            mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>;
+            width: number;
+            height: number;
+            top: number;
+            left: number;
+            m: THREE.ShaderMaterial;
+            tl?: gsap.core.Timeline;
+        };
+    };
     materials!: THREE.ShaderMaterial[];
     asscroll: ASScroll;
 
+    isAnimationActive = false;
     constructor(scene: THREE.Scene, asscroll: ASScroll) {
         this.asscroll = asscroll;
         this.scene = scene;
+        this.imageData = {};
         // this.setUpSettings();
 
         document.getElementById('corner')?.addEventListener('click', () => (this.tl.progress() >= 1 ? this.tl.reverse() : this.play()));
@@ -70,21 +76,21 @@ export class Plane {
             fragmentShader,
         });
 
-        this.setUpAnimation();
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        // this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-        this.scene.add(this.mesh);
-        this.mesh.scale.set(350, 350, 1);
-        this.mesh.position.x -= 300;
+        // this.scene.add(this.mesh);
+        // this.mesh.scale.set(350, 350, 1);
+        // this.mesh.position.x -= 300;
         // this.mesh.rotation.z += 0.5;
         this.setUpImages();
+        this.clickEvents();
         return this;
     }
 
     setUpImages() {
         this.materials = [];
         this.images = Array.from(document.querySelectorAll<HTMLImageElement>('img')!);
-        this.imageData = this.images.map((img) => {
+        this.images.forEach((img) => {
             let bounds = img.getBoundingClientRect();
             let m = this.material.clone();
             this.materials.push(m);
@@ -95,66 +101,68 @@ export class Plane {
 
             m.uniforms.uTexture.value = texture;
 
-            img.addEventListener('mouseout', () => {
-                this.tl = gsap
-                    .timeline()
-                    .to(m.uniforms.uCorners.value, {
-                        x: 0,
-                        duration: 0.4,
-                    })
-                    .to(
-                        m.uniforms.uCorners.value,
-                        {
-                            y: 0,
-                            duration: 0.4,
-                        },
-                        0.1
-                    )
-                    .to(
-                        m.uniforms.uCorners.value,
-                        {
-                            z: 0,
-                            duration: 0.4,
-                        },
-                        0.2
-                    )
-                    .to(
-                        m.uniforms.uCorners.value,
-                        {
-                            w: 0,
-                            duration: 0.4,
-                        },
-                        0.3
-                    );
-            });
-
             let mesh = new THREE.Mesh(this.geometry, m);
             this.scene.add(mesh);
             mesh.scale.set(bounds.width, bounds.height, 1);
-            return {
+            this.imageData[m.id] = {
                 img: img,
                 mesh: mesh,
                 width: bounds.width,
                 height: bounds.height,
                 top: bounds.top,
                 left: bounds.left,
+                m,
             };
         });
     }
+    clickEvents() {
+        Object.values(this.imageData).forEach((i) => {
+            i.img.addEventListener('mouseover', () => {
+                console.log('hey');
+                if (i.tl == null) {
+                    let tl = this.getAnimation(i.m);
+                    this.imageData[i.m.id].tl = tl;
+                }
+                i.tl!.play();
+                this.isAnimationActive = true;
+            });
+            i.img.addEventListener('mouseout', () => {
+                console.log('hey out');
+                i.tl?.reverse();
+                this.isAnimationActive = false;
+            });
+        });
+    }
+    resize() {
+        Object.values(this.imageData).forEach((i) => {
+            let bounds = i.img.getBoundingClientRect();
+            i.mesh.scale.set(bounds.width, bounds.height, 1);
+            i.top = bounds.top + this.asscroll.currentPos;
+            i.left = bounds.left;
+            i.width = bounds.width;
+            i.height = bounds.height;
 
-    setUpAnimation() {
-        this.tl = gsap
+            i.mesh.material.uniforms.uQuadSize.value.x = bounds.width;
+            i.mesh.material.uniforms.uQuadSize.value.y = bounds.height;
+
+            i.mesh.material.uniforms.uTextureSize.value.x = bounds.width;
+            i.mesh.material.uniforms.uTextureSize.value.y = bounds.height;
+        });
+    }
+
+    getAnimation(material: THREE.ShaderMaterial) {
+        return gsap
             .timeline({ paused: true, defaults: { duration: 1 } })
-            .to(this.material.uniforms.uCorners.value, { x: 1 })
-            .to(this.material.uniforms.uCorners.value, { y: 1 }, 0.1)
-            .to(this.material.uniforms.uCorners.value, { z: 1 }, 0.3)
-            .to(this.material.uniforms.uCorners.value, { w: 1 }, 0.5);
+            .to(material.uniforms.uCorners.value, { x: 1 })
+            .to(material.uniforms.uCorners.value, { y: 1 }, 0.1)
+            .to(material.uniforms.uCorners.value, { z: 1 }, 0.3)
+            .to(material.uniforms.uCorners.value, { w: 1 }, 0.5);
     }
 
     setPosition() {
         // console.log(this.asscroll.currentPos)
-        if (!this.tl.isActive()) {
-            this.imageData.forEach((o) => {
+        if (!this.isAnimationActive) {
+            Object.values(this.imageData).forEach((o) => {
                 o.mesh.position.x = o.left - getWidth() / 2 + o.width / 2;
                 o.mesh.position.y = this.asscroll.currentPos + -o.top + getHeight() / 2 - o.height / 2;
             });
