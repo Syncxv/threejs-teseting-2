@@ -59,11 +59,11 @@ function onDocumentMouseMove(event: MouseEvent) {
 }
 
 document.addEventListener('mousemove', onDocumentMouseMove, false);
-let plane = new PlaneTesting(scene).addObjects();
+let plane = new PlaneTesting(scene, asscroll).addObjects();
 (window as any).plane = plane;
 
 function animate(t?: number) {
-    // plane.render();
+    plane.render();
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }

@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import vertexShader from './glsl/vertex.glsl';
 import fragmentShader from './glsl/fragment.glsl';
 import { getHeight, getWidth } from '../../main';
+import ASScroll from '@ashthornton/asscroll';
 
 export class Plane {
     geometry!: THREE.PlaneGeometry;
@@ -27,8 +28,10 @@ export class Plane {
         left: number;
     }[];
     materials!: THREE.ShaderMaterial[];
+    asscroll: ASScroll;
 
-    constructor(scene: THREE.Scene) {
+    constructor(scene: THREE.Scene, asscroll: ASScroll) {
+        this.asscroll = asscroll;
         this.scene = scene;
         // this.setUpSettings();
 
@@ -39,6 +42,7 @@ export class Plane {
     render() {
         // this.material.uniforms.uProgress.value = this.settings.progress;
         // this.tl.progress(this.settings.progress);
+        this.setPosition();
     }
 
     setUpSettings() {
@@ -144,6 +148,16 @@ export class Plane {
             .to(this.material.uniforms.uCorners.value, { y: 1 }, 0.1)
             .to(this.material.uniforms.uCorners.value, { z: 1 }, 0.3)
             .to(this.material.uniforms.uCorners.value, { w: 1 }, 0.5);
+    }
+
+    setPosition() {
+        // console.log(this.asscroll.currentPos)
+        if (!this.tl.isActive()) {
+            this.imageData.forEach((o) => {
+                o.mesh.position.x = -this.asscroll.currentPos + o.left - getWidth() / 2 + o.width / 2;
+                o.mesh.position.y = -o.top + getHeight() / 2 - o.height / 2;
+            });
+        }
     }
 
     play() {
