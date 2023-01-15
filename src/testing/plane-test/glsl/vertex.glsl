@@ -21,8 +21,8 @@ void main() {
 
     vec4 initalState =  modelMatrix * vec4(position, 1.0);
     vec4 fullscreenState = vec4(position, 1.0);
-    fullscreenState.x *=  uResolution.x / uQuadSize.x ;
-    fullscreenState.y *=  uResolution.y / uQuadSize.y ;
+    fullscreenState.x *=  uResolution.x ;
+    fullscreenState.y *=  uResolution.y ;
 
     float realProgress = mix(mix(uCorners.y, uCorners.x, uv.x), mix(uCorners.z, uCorners.w, uv.x), uv.y);
 

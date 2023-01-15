@@ -6,6 +6,7 @@
     // margin-top: 20vmax;
     width: 100vw;
     height: 100vh;
+    position: fixed;
     //to test if the canvas plane was 350px x 350px yk
     // &::before {
     //     content: '';
@@ -20,4 +21,27 @@
 }
 #corner {
     position: absolute;
+    z-index: 99;
+}
+.scroll-wrapper {
+}
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    padding: 5rem;
+
+    .item {
+        width: 20rem;
+        aspect-ratio: 1/ 1;
+
+        color: white;
+        text-decoration: none;
+        img {
+            opacity: 0.1;
+        }
+    }
 }
